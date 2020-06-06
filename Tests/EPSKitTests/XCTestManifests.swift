@@ -4,6 +4,7 @@ import XCTest
 public func allTests() -> [XCTestCaseEntry] {
     return [
         testCase(EPSKitTests.allTests),
+        testCase(EPSKitGeometryTests.allTests),
     ]
 }
 #endif
