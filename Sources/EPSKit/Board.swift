@@ -5,8 +5,8 @@ public extension EPS {
 
     class Board {
 
-        let configuration: Configuration
-        private(set) var contents: String = ""
+        public let configuration: Configuration
+        public private(set) var contents: String = ""
         private var isAllowingDelimiter: Int = 0
 
         public init(configuration: Configuration) {
