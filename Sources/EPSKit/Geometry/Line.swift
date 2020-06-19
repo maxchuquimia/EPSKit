@@ -30,7 +30,28 @@ public extension EPS.Line {
     }
 
     func rotated(around point: CGPoint, by degrees: CGFloat) -> EPS.Line {
-        fatalError("TODO")
+        EPS.Line(points: points.map { $0.rotated(around: point, by: degrees) })
+    }
+
+    func moved(to origin: CGPoint) -> EPS.Line {
+        translated(by: origin - boundary.origin)
+    }
+
+    var boundary: CGRect {
+        var maxCorner = CGPoint(x: -CGFloat.infinity, y: -.infinity)
+        var minCorner = CGPoint(x: CGFloat.infinity, y: .infinity)
+
+        for p in points {
+            if p.x < minCorner.x { minCorner.x = p.x }
+            if p.y < minCorner.y { minCorner.y = p.y }
+            if p.x > maxCorner.x { maxCorner.x = p.x }
+            if p.y > maxCorner.y { maxCorner.y = p.y }
+        }
+
+        return CGRect(
+            origin: minCorner,
+            size: CGSize(width: maxCorner.x - minCorner.x, height: maxCorner.y - minCorner.y)
+        )
     }
 
 }

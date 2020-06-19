@@ -97,6 +97,41 @@ final class EPSKitGeometryTests: XCTestCase {
         )
     }
 
+    func testMoving() {
+        let line = EPS.Line(points: CGPoint(x: 10, y: 10), CGPoint(x: 100, y: 100))
+        XCTAssertEqual(
+            line.moved(to: CGPoint(x: 0, y: 10)),
+            EPS.Line(points: CGPoint(x: 0, y: 10), CGPoint(x: 90, y: 100))
+        )
+
+        let line2 = EPS.Line(points: CGPoint(x: 0, y: 10), CGPoint(x: 100, y: 100))
+        XCTAssertEqual(
+            line2.moved(to: CGPoint(x: 100, y: 100)),
+            EPS.Line(points: CGPoint(x: 100, y: 100), CGPoint(x: 200, y: 190))
+        )
+    }
+
+    func testRotating() {
+        let line = EPS.Line(points: CGPoint(x: 10, y: 10), CGPoint(x: 10, y: 20))
+
+        let rotated90AroundLineCenter = line.rotated(around: CGPoint(x: 10, y: 15), by: 90)
+        XCTAssertEqual(rotated90AroundLineCenter.points[0].x, 5)
+        XCTAssertEqual(rotated90AroundLineCenter.points[0].y, 15)
+        XCTAssertEqual(rotated90AroundLineCenter.points[1].x, 15)
+        XCTAssertEqual(rotated90AroundLineCenter.points[1].y, 15)
+
+        let rotated180AroundLineCenter = line.rotated(around: CGPoint(x: 10, y: 15), by: 180)
+        XCTAssertEqual(rotated180AroundLineCenter.points[0].x, 10)
+        XCTAssertEqual(rotated180AroundLineCenter.points[0].y, 20)
+        XCTAssertEqual(rotated180AroundLineCenter.points[1].x, 10)
+        XCTAssertEqual(rotated180AroundLineCenter.points[1].y, 10)
+    }
+
+    func testBoundary() {
+        let line = EPS.Line(points: CGPoint(x: -1, y: -1), CGPoint(x: 1, y: 2), .zero)
+        XCTAssertEqual(line.boundary, CGRect(x: -1, y: -1, width: 2, height: 3))
+    }
+
     static var allTests = [
         ("testBreakingLineIntoSegments", testBreakingLineIntoSegments),
         ("testSegmentsByRemovingDuplicateSegments", testSegmentsByRemovingDuplicateSegments),
